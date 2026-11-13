@@ -1,0 +1,10 @@
+=x Perguntas de Negócio =x
+
+1. Quanto faturamos por ano, trimestre e mes?
+2. Quais marcas e modelos mais vendem?
+3. Qual vendedor mais vende?
+4. Qual loja fatura mais e quanto desconto da?
+5. Qual forma de pagamento e mais usada?
+6. Quanto os servicos representam no faturamento?
+7. De quais cidades vem mais clientes?
+8. Que perfis de cliente existem (frequencia e valor) e o que compram junto?
