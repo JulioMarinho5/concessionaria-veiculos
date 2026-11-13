@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1"
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+		http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+
+	<persistence-unit name="concessionariaPU" transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+		<class>com.github.projetobd2.concessionaria_veiculos.modelo.Pessoa</class>
+		<class>com.github.projetobd2.concessionaria_veiculos.modelo.Cliente</class>
+		<class>com.github.projetobd2.concessionaria_veiculos.modelo.Funcionario</class>
+		<class>com.github.projetobd2.concessionaria_veiculos.modelo.DocumentoCliente</class>
+		<class>com.github.projetobd2.concessionaria_veiculos.modelo.Endereco</class>
+		<class>com.github.projetobd2.concessionaria_veiculos.modelo.Loja</class>
+		<class>com.github.projetobd2.concessionaria_veiculos.modelo.Marca</class>
+		<class>com.github.projetobd2.concessionaria_veiculos.modelo.Modelo</class>
+		<class>com.github.projetobd2.concessionaria_veiculos.modelo.Veiculo</class>
+		<class>com.github.projetobd2.concessionaria_veiculos.modelo.Servico</class>
+		<class>com.github.projetobd2.concessionaria_veiculos.modelo.Venda</class>
+		<class>com.github.projetobd2.concessionaria_veiculos.modelo.ItemVenda</class>
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+
+		<properties>
+			<!-- Ajuste URL, usuario e senha para o PostgreSQL de cada integrante -->
+			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/concessionaria" />
+			<property name="javax.persistence.jdbc.user" value="postgres" />
+			<property name="javax.persistence.jdbc.password" value="postgres" />
+
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL95Dialect" />
+			<!-- update: cria/atualiza as tabelas do OLTP (esquema public) a partir das entidades -->
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.show_sql" value="false" />
+			<property name="hibernate.format_sql" value="true" />
+			<!-- Agrupa INSERTs/UPDATEs na carga de dados -->
+			<property name="hibernate.jdbc.batch_size" value="50" />
+			<property name="hibernate.order_inserts" value="true" />
+		</properties>
+	</persistence-unit>
+</persistence>
