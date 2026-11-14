@@ -96,9 +96,9 @@ public class VendaDAO extends GenericDAO<Venda, Long> {
 		return em.createQuery(
 				"SELECT "
 				+ "SUM(CASE WHEN i.veiculo IS NOT NULL "
-				+ "    THEN i.quantidade * i.precoUnitario - COALESCE(i.desconto, 0) ELSE 0 END), "
+								+ "    THEN (i.quantidade * i.precoUnitario - COALESCE(i.desconto, 0)) ELSE 0 END), "
 				+ "SUM(CASE WHEN i.servico IS NOT NULL "
-				+ "    THEN i.quantidade * i.precoUnitario - COALESCE(i.desconto, 0) ELSE 0 END) "
+				+ "    THEN (i.quantidade * i.precoUnitario - COALESCE(i.desconto, 0)) ELSE 0 END) "
 				+ "FROM ItemVenda i", Object[].class)
 				.getSingleResult();
 	}
