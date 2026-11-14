@@ -1,0 +1,122 @@
+      tabela       | linhas 
+-------------------+--------
+ pessoa            |    234
+ cliente           |    200
+ funcionario       |     34
+ documento_cliente |    156
+ loja              |      5
+ marca             |      7
+ modelo            |     32
+ veiculo           |    993
+ servico           |     15
+ venda             |   2000
+ item_venda        |   5015
+(11 linhas)
+
+          requisito          | minimo | encontrado | status 
+-----------------------------+--------+------------+--------
+ Clientes                    |    200 |        200 | OK
+ Itens (veiculos + servicos) |    100 |       1008 | OK
+ Lojas                       |      5 |          5 | OK
+ Vendas                      |   2000 |       2000 | OK
+ Anos distintos com vendas   |      2 |          3 | OK
+(5 linhas)
+
+   primeira_venda    |    ultima_venda     | dias_cobertos 
+---------------------+---------------------+---------------
+ 2024-01-02 09:19:00 | 2026-10-31 11:39:00 |          1033
+(1 linha)
+
+                         verificacao                         | problemas | status 
+-------------------------------------------------------------+-----------+--------
+ 01 Pessoa sem subtipo (nem cliente nem funcionario)         |         0 | OK
+ 02 Pessoa que e cliente e funcionario ao mesmo tempo        |         0 | OK
+ 03 Cliente/funcionario sem linha em pessoa                  |         0 | OK
+ 04 Funcionario sem loja valida                              |         0 | OK
+ 05 Modelo sem marca valida                                  |         0 | OK
+ 06 Veiculo sem modelo valido                                |         0 | OK
+ 07 Venda sem cliente, vendedor ou loja validos              |         0 | OK
+ 08 Item sem venda valida                                    |         0 | OK
+ 09 Item apontando para veiculo/servico inexistente          |         0 | OK
+ 10 Documento sem cliente valido                             |         0 | OK
+ 11 Cliente com mais de um documento (quebra o 1:1)          |         0 | OK
+ 12 Item com veiculo E servico, ou sem nenhum dos dois       |         0 | OK
+ 13 Item de veiculo com quantidade diferente de 1            |         0 | OK
+ 14 Item com quantidade <= 0 ou preco negativo               |         0 | OK
+ 15 Desconto negativo ou maior que o valor bruto             |         0 | OK
+ 16 Veiculo (chassi) vendido mais de uma vez                 |         0 | OK
+ 17 Venda sem nenhum item                                    |         0 | OK
+ 18 Venda com mais de um veiculo                             |         0 | OK
+ 19 Vendedor que nao trabalha na loja da venda               |         0 | OK
+ 20 Venda de veiculo feita por quem nao e Vendedor           |         0 | OK
+ 21 Venda anterior ao cadastro do cliente                    |         0 | OK
+ 22 Forma de pagamento fora do enum FormaPagamento           |         0 | OK
+ 23 Chassi com tamanho diferente de 17                       |         0 | OK
+ 24 CPF repetido                                             |         0 | OK
+ 25 Pessoa ou venda sem data_atualizacao (necessaria ao ETL) |         0 | OK
+ 26 Cliente sem cidade/UF (necessaria ao SCD tipo 2)         |         0 | OK
+(26 linhas)
+
+    tipo     |         cargo         | qtd 
+-------------+-----------------------+-----
+ Cliente     |                       | 200
+ Funcionario | Consultor de Servicos |  10
+ Funcionario | Gerente               |   5
+ Funcionario | Vendedor              |  19
+(4 linhas)
+
+ id |                nome                |        cidade        | funcionarios 
+----+------------------------------------+----------------------+--------------
+  1 | Rota Veiculos Paralela             | Salvador             |            8
+  2 | Rota Veiculos Iguatemi             | Salvador             |            7
+  3 | Rota Veiculos Lauro de Freitas     | Lauro de Freitas     |            6
+  4 | Rota Veiculos Feira de Santana     | Feira de Santana     |            7
+  5 | Rota Veiculos Vitoria da Conquista | Vitoria da Conquista |            6
+(5 linhas)
+
+ situacao | clientes 
+----------+----------
+ sem CNH  |       44
+ com CNH  |      156
+(2 linhas)
+
+   marca    | modelos | veiculos | vendidos | em_estoque 
+------------+---------+----------+----------+------------
+ Fiat       |       7 |      267 |      239 |         28
+ Chevrolet  |       6 |      206 |      187 |         19
+ Volkswagen |       6 |      187 |      172 |         15
+ Hyundai    |       3 |      144 |      126 |         18
+ Toyota     |       4 |       82 |       75 |          7
+ Jeep       |       3 |       63 |       56 |          7
+ Honda      |       3 |       44 |       38 |          6
+(7 linhas)
+
+ venda |      data_hora      | forma_pagamento |          cliente          |          vendedor          |              loja              |            item             | quantidade | preco_unitario | desconto | valor_liquido 
+-------+---------------------+-----------------+---------------------------+----------------------------+--------------------------------+-----------------------------+------------+----------------+----------+---------------
+     1 | 2024-01-02 09:19:00 | CARTAO          | Pedro Santos Brito        | Marcos Bispo Freitas       | Rota Veiculos Paralela         | Revisao 20.000 km           |          1 |         890.00 |     0.00 |        890.00
+     1 | 2024-01-02 09:19:00 | CARTAO          | Pedro Santos Brito        | Marcos Bispo Freitas       | Rota Veiculos Paralela         | Troca de oleo e filtro      |          1 |         380.00 |     0.00 |        380.00
+     1 | 2024-01-02 09:19:00 | CARTAO          | Pedro Santos Brito        | Marcos Bispo Freitas       | Rota Veiculos Paralela         | Alinhamento e balanceamento |          1 |         220.00 |     0.00 |        220.00
+     2 | 2024-01-02 11:02:00 | CONSORCIO       | Felipe Nascimento Martins | Vanessa Rocha Nascimento   | Rota Veiculos Feira de Santana | Volkswagen Polo 2023        |          1 |       95200.00 |  3350.00 |      91850.00
+     2 | 2024-01-02 11:02:00 | CONSORCIO       | Felipe Nascimento Martins | Vanessa Rocha Nascimento   | Rota Veiculos Feira de Santana | Emplacamento e documentacao |          1 |        1100.00 |     0.00 |       1100.00
+     2 | 2024-01-02 11:02:00 | CONSORCIO       | Felipe Nascimento Martins | Vanessa Rocha Nascimento   | Rota Veiculos Feira de Santana | Kit tapetes e acessorios    |          1 |         450.00 |     0.00 |        450.00
+     3 | 2024-01-03 16:36:00 | CARTAO          | Mariana Queiroz Barbosa   | Mariana Lima Carvalho      | Rota Veiculos Paralela         | Troca de pneus (jogo)       |          1 |        2400.00 |     0.00 |       2400.00
+     3 | 2024-01-03 16:36:00 | CARTAO          | Mariana Queiroz Barbosa   | Mariana Lima Carvalho      | Rota Veiculos Paralela         | Alinhamento e balanceamento |          1 |         220.00 |     0.00 |        220.00
+     4 | 2024-01-03 18:46:00 | FINANCIAMENTO   | Gabriela Mendes Carvalho  | Sergio Nascimento Teixeira | Rota Veiculos Feira de Santana | Jeep Renegade 2023          |          1 |      126800.00 |     0.00 |     126800.00
+     4 | 2024-01-03 18:46:00 | FINANCIAMENTO   | Gabriela Mendes Carvalho  | Sergio Nascimento Teixeira | Rota Veiculos Feira de Santana | Emplacamento e documentacao |          1 |        1100.00 |     0.00 |       1100.00
+     4 | 2024-01-03 18:46:00 | FINANCIAMENTO   | Gabriela Mendes Carvalho  | Sergio Nascimento Teixeira | Rota Veiculos Feira de Santana | Garantia estendida 2 anos   |          1 |        3500.00 |     0.00 |       3500.00
+     5 | 2024-01-04 09:47:00 | CARTAO          | Danilo Mendes Conceicao   | Mariana Gomes Reis         | Rota Veiculos Lauro de Freitas | Troca de oleo e filtro      |          1 |         380.00 |    57.00 |        323.00
+(12 linhas)
+
+ ano  | vendas | faturamento_liquido 
+------+--------+---------------------
+ 2024 |    653 |         38601837.00
+ 2025 |    703 |         41164439.83
+ 2026 |    644 |         37193200.01
+(3 linhas)
+
+ tipo_item | itens | valor_liquido 
+-----------+-------+---------------
+ Veiculo   |   893 |  112823450.00
+ Servico   |  4122 |    4136026.84
+(2 linhas)
+
