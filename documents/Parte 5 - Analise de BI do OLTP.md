@@ -49,7 +49,7 @@ Numeros tirados de `resultado_analise_bi_oltp.txt` (2.000 vendas, jan/2024 a out
 8. **Compra conjunta (previa do Apriori, suporte >= 2% e confianca >= 40%).**
    - Troca de pneus -> alinhamento: confianca 86%, lift 5,58 (a regra mais forte).
    - Higienizacao -> polimento: confianca 60%, lift 3,59.
-   - Revisao (10, 20 ou 30 mil km) -> troca de oleo: confianca de 61% a 72%, lift de 2,5 a 2,9.
+   - Revisao (10, 20 ou 30 mil km) -> troca de oleo: confianca de 61% a 72%, lift de 2,51 a 2,95.
    - Picape ou SUV -> pelicula: confianca de 67% a 70%, lift ~2,6.
    - As regras com "Emplacamento" sao obvias (so existe emplacamento em venda de veiculo).
      Na Etapa 2 elas devem ser filtradas ou comentadas como regra trivial.
