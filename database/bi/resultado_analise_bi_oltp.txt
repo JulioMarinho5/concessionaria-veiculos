@@ -1,0 +1,241 @@
+-- Saida de: psql -U postgres -d concessionaria -f database/bi/analise_bi_oltp.sql
+-- PostgreSQL 16, tabelas de database/oltp/schema-OLTP.sql e dados de database/oltp/carga_dados.sql
+-- (2.000 vendas, jan/2024 a out/2026)
+
+       atributo        | distintos 
+-----------------------+-----------
+ cliente.cidade        |        12
+ cliente.estado        |         3
+ loja.cidade           |         4
+ marca.nome            |         7
+ modelo.nome           |        32
+ modelo.categoria      |         5
+ veiculo.cor           |         6
+ servico.nome          |        15
+ venda.forma_pagamento |         4
+ funcionario.cargo     |         3
+(10 rows)
+
+           verificacao           | ocorrencias 
+---------------------------------+-------------
+ Pessoa sem telefone             |           0
+ Pessoa sem cidade/UF            |           0
+ Cidade com espaco nas pontas    |           0
+ Cidade toda em minusculas       |           0
+ Modelo sem categoria            |           0
+ Veiculo sem cor                 |           0
+ Item com desconto nulo          |           0
+ Cliente sem CNH (sem documento) |          44
+ Cliente que nunca comprou       |          16
+(9 rows)
+
+         cidade         | estado | clientes 
+------------------------+--------+----------
+ Salvador               | BA     |       87
+ Feira de Santana       | BA     |       32
+ Lauro de Freitas       | BA     |       20
+ Vitoria da Conquista   | BA     |       19
+ Camacari               | BA     |        9
+ Ilheus                 | BA     |        7
+ Itabuna                | BA     |        7
+ Santo Antonio de Jesus | BA     |        7
+ Alagoinhas             | BA     |        5
+ Simoes Filho           | BA     |        5
+ Aracaju                | SE     |        1
+ Recife                 | PE     |        1
+(12 rows)
+
+ ano  | trimestre | vendas | faturamento 
+------+-----------+--------+-------------
+ 2024 |         1 |    129 |  7008047.50
+ 2024 |         2 |    170 |  9067339.50
+ 2024 |         3 |    150 |  9581019.00
+ 2024 |         4 |    204 | 12945431.00
+ 2025 |         1 |    152 | 11155047.69
+ 2025 |         2 |    166 |  9505456.91
+ 2025 |         3 |    175 |  9718083.62
+ 2025 |         4 |    210 | 10785851.61
+ 2026 |         1 |    170 | 10254809.42
+ 2026 |         2 |    208 | 12620268.72
+ 2026 |         3 |    197 | 10117856.25
+ 2026 |         4 |     69 |  4200265.62
+(12 rows)
+
+ ano  | vendas_jan_out | faturamento_jan_out 
+------+----------------+---------------------
+ 2024 |            509 |         29965022.00
+ 2025 |            560 |         33746438.11
+ 2026 |            644 |         37193200.01
+(3 rows)
+
+ mes | media_vendas_mes 
+-----+------------------
+   1 |             49.0
+   2 |             39.5
+   3 |             52.0
+   4 |             55.0
+   5 |             57.5
+   6 |             55.5
+   7 |             54.0
+   8 |             61.5
+   9 |             47.0
+  10 |             63.5
+  11 |             62.0
+  12 |             81.5
+(12 rows)
+
+   marca    | categoria | unidades | faturamento 
+------------+-----------+----------+-------------
+ Fiat       | Hatch     |       81 |  6579800.00
+ Fiat       | SUV       |       68 |  8597150.00
+ Fiat       | Picape    |       60 |  7543300.00
+ Jeep       | SUV       |       56 | 10135450.00
+ Volkswagen | Hatch     |       53 |  5106650.00
+ Volkswagen | SUV       |       49 |  7025750.00
+ Hyundai    | Seda      |       49 |  4855650.00
+ Hyundai    | Hatch     |       49 |  4269750.00
+ Chevrolet  | Picape    |       47 |  7489750.00
+ Chevrolet  | Seda      |       47 |  4821400.00
+ Volkswagen | Picape    |       45 |  7028600.00
+ Chevrolet  | Hatch     |       37 |  3372150.00
+ Toyota     | Hatch     |       32 |  3584800.00
+ Fiat       | Seda      |       30 |  2994100.00
+ Chevrolet  | Minivan   |       29 |  3565250.00
+(15 rows)
+
+                loja                |          vendedor          | vendas | faturamento 
+------------------------------------+----------------------------+--------+-------------
+ Rota Veiculos Iguatemi             | Eduardo Conceicao Moreira  |     79 | 10343695.97
+ Rota Veiculos Vitoria da Conquista | Daniela Ferreira Ribeiro   |     75 |  9554013.26
+ Rota Veiculos Paralela             | Helena Dias Araujo         |     71 |  9361304.82
+ Rota Veiculos Lauro de Freitas     | Natalia Ferreira Almeida   |     69 |  8511162.50
+ Rota Veiculos Feira de Santana     | Sergio Nascimento Teixeira |     59 |  8140449.19
+(5 rows)
+
+                loja                |    bruto    | desconto  |   liquido   | pct_desconto 
+------------------------------------+-------------+-----------+-------------+--------------
+ Rota Veiculos Iguatemi             | 26925141.04 | 650691.23 | 26274449.81 |         2.42
+ Rota Veiculos Paralela             | 25093504.54 | 589495.85 | 24504008.69 |         2.35
+ Rota Veiculos Feira de Santana     | 24371528.83 | 567803.41 | 23803725.42 |         2.33
+ Rota Veiculos Vitoria da Conquista | 22214245.44 | 500186.38 | 21714059.06 |         2.25
+ Rota Veiculos Lauro de Freitas     | 21239590.67 | 576356.81 | 20663233.86 |         2.71
+(5 rows)
+
+    tipo_venda    | forma_pagamento | vendas 
+------------------+-----------------+--------
+ So servicos      | CARTAO          |    691
+ So servicos      | A_VISTA         |    416
+ Venda de veiculo | FINANCIAMENTO   |    424
+ Venda de veiculo | CONSORCIO       |    175
+ Venda de veiculo | A_VISTA         |    162
+ Venda de veiculo | CARTAO          |    132
+(6 rows)
+
+ ano  |  veiculos   |  servicos  | pct_servicos 
+------+-------------+------------+--------------
+ 2024 | 37259700.00 | 1342137.00 |         3.48
+ 2025 | 39712350.00 | 1452089.83 |         3.53
+ 2026 | 35851400.00 | 1341800.01 |         3.61
+(3 rows)
+
+                loja                |     cidade_cliente     | vendas | pct_da_loja 
+------------------------------------+------------------------+--------+-------------
+ Rota Veiculos Feira de Santana     | Feira de Santana       |    217 |        58.2
+ Rota Veiculos Feira de Santana     | Santo Antonio de Jesus |     79 |        21.2
+ Rota Veiculos Feira de Santana     | Alagoinhas             |     42 |        11.3
+ Rota Veiculos Feira de Santana     | Salvador               |     35 |         9.4
+ Rota Veiculos Iguatemi             | Salvador               |    323 |        80.1
+ Rota Veiculos Iguatemi             | Simoes Filho           |     35 |         8.7
+ Rota Veiculos Iguatemi             | Lauro de Freitas       |     23 |         5.7
+ Rota Veiculos Iguatemi             | Feira de Santana       |     22 |         5.5
+ Rota Veiculos Lauro de Freitas     | Lauro de Freitas       |    223 |        66.6
+ Rota Veiculos Lauro de Freitas     | Camacari               |     77 |        23.0
+ Rota Veiculos Lauro de Freitas     | Salvador               |     35 |        10.4
+ Rota Veiculos Paralela             | Salvador               |    316 |        81.4
+ Rota Veiculos Paralela             | Lauro de Freitas       |     26 |         6.7
+ Rota Veiculos Paralela             | Vitoria da Conquista   |     25 |         6.4
+ Rota Veiculos Paralela             | Feira de Santana       |     21 |         5.4
+ Rota Veiculos Vitoria da Conquista | Vitoria da Conquista   |    164 |        53.1
+ Rota Veiculos Vitoria da Conquista | Itabuna                |     65 |        21.0
+ Rota Veiculos Vitoria da Conquista | Ilheus                 |     53 |        17.2
+ Rota Veiculos Vitoria da Conquista | Salvador               |     27 |         8.7
+(19 rows)
+
+       medida        | minimo |    q1     |  mediana  |    q3     |   maximo   
+---------------------+--------+-----------+-----------+-----------+------------
+ recencia (dias)     |      0 |      24.5 |      87.5 |    203.25 |       1006
+ frequencia (vendas) |      1 |         3 |         5 |        15 |         64
+ valor (R$)          | 418.95 | 134189.75 | 385500.97 | 789510.59 | 4275154.12
+(3 rows)
+
+        grupo         | clientes | faturamento | pct_faturamento 
+----------------------+----------+-------------+-----------------
+ Top 10% dos clientes |       19 | 48587265.95 |            41.5
+ Demais 90%           |      165 | 68372210.89 |            58.5
+(2 rows)
+
+         se_comprou          |        entao_compra         | vendas | suporte | confianca | lift 
+-----------------------------+-----------------------------+--------+---------+-----------+------
+ Troca de pneus (jogo)       | Alinhamento e balanceamento |    140 |   0.070 |     0.859 | 5.58
+ Alinhamento e balanceamento | Troca de pneus (jogo)       |    140 |   0.070 |     0.455 | 5.58
+ Higienizacao interna        | Polimento e cristalizacao   |     82 |   0.041 |     0.599 | 3.59
+ Instalacao de multimidia    | VEICULO_HATCH               |     68 |   0.034 |     0.436 | 3.46
+ Revisao 20.000 km           | Troca de oleo e filtro      |    119 |   0.060 |     0.721 | 2.95
+ Revisao 30.000 km           | Troca de oleo e filtro      |    116 |   0.058 |     0.686 | 2.81
+ VEICULO_PICAPE              | Pelicula (insulfilm)        |    113 |   0.057 |     0.702 | 2.68
+ VEICULO_SUV                 | Pelicula (insulfilm)        |    176 |   0.088 |     0.672 | 2.57
+ Revisao 10.000 km           | Troca de oleo e filtro      |     89 |   0.045 |     0.614 | 2.51
+ Polimento e cristalizacao   | Pelicula (insulfilm)        |    216 |   0.108 |     0.649 | 2.48
+ Pelicula (insulfilm)        | Polimento e cristalizacao   |    216 |   0.108 |     0.413 | 2.48
+ VEICULO_HATCH               | Emplacamento e documentacao |    221 |   0.111 |     0.877 | 2.30
+ Kit tapetes e acessorios    | Emplacamento e documentacao |    223 |   0.112 |     0.868 | 2.28
+ VEICULO_PICAPE              | Emplacamento e documentacao |    138 |   0.069 |     0.857 | 2.25
+ Garantia estendida 2 anos   | Emplacamento e documentacao |    164 |   0.082 |     0.850 | 2.23
+(15 rows)
+
+                                                                 QUERY PLAN                                                                  
+---------------------------------------------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=326.43..390.39 rows=3655 width=160) (actual time=3.317..3.373 rows=210 loops=1)
+   Group Key: EXTRACT(year FROM v.data_hora), EXTRACT(quarter FROM v.data_hora), mo.categoria, l.cidade
+   Batches: 1  Memory Usage: 241kB
+   Buffers: shared hit=78
+   ->  Hash Join  (cost=135.19..271.61 rows=3655 width=160) (actual time=0.650..2.860 rows=893 loops=1)
+         Hash Cond: (v.loja_id = l.id)
+         Buffers: shared hit=78
+         ->  Hash Join  (cost=112.59..221.06 rows=3655 width=80) (actual time=0.636..2.538 rows=893 loops=1)
+               Hash Cond: (ve.modelo_id = mo.id)
+               Buffers: shared hit=77
+               ->  Hash Join  (cost=85.72..184.53 rows=3655 width=56) (actual time=0.625..2.395 rows=893 loops=1)
+                     Hash Cond: (i.veiculo_id = ve.id)
+                     Buffers: shared hit=76
+                     ->  Hash Join  (cost=59.12..148.29 rows=3655 width=56) (actual time=0.405..1.812 rows=5015 loops=1)
+                           Hash Cond: (i.venda_id = v.id)
+                           Buffers: shared hit=65
+                           ->  Seq Scan on item_venda i  (cost=0.00..79.55 rows=3655 width=48) (actual time=0.002..0.333 rows=5015 loops=1)
+                                 Buffers: shared hit=43
+                           ->  Hash  (cost=38.50..38.50 rows=1650 width=24) (actual time=0.400..0.400 rows=2000 loops=1)
+                                 Buckets: 2048  Batches: 1  Memory Usage: 126kB
+                                 Buffers: shared hit=22
+                                 ->  Seq Scan on venda v  (cost=0.00..38.50 rows=1650 width=24) (actual time=0.002..0.186 rows=2000 loops=1)
+                                       Buffers: shared hit=22
+                     ->  Hash  (cost=17.93..17.93 rows=693 width=16) (actual time=0.215..0.215 rows=993 loops=1)
+                           Buckets: 1024  Batches: 1  Memory Usage: 55kB
+                           Buffers: shared hit=11
+                           ->  Seq Scan on veiculo ve  (cost=0.00..17.93 rows=693 width=16) (actual time=0.002..0.106 rows=993 loops=1)
+                                 Buffers: shared hit=11
+               ->  Hash  (cost=17.50..17.50 rows=750 width=40) (actual time=0.008..0.008 rows=32 loops=1)
+                     Buckets: 1024  Batches: 1  Memory Usage: 10kB
+                     Buffers: shared hit=1
+                     ->  Seq Scan on modelo mo  (cost=0.00..17.50 rows=750 width=40) (actual time=0.001..0.004 rows=32 loops=1)
+                           Buffers: shared hit=1
+         ->  Hash  (cost=15.60..15.60 rows=560 width=40) (actual time=0.007..0.007 rows=5 loops=1)
+               Buckets: 1024  Batches: 1  Memory Usage: 9kB
+               Buffers: shared hit=1
+               ->  Seq Scan on loja l  (cost=0.00..15.60 rows=560 width=40) (actual time=0.004..0.004 rows=5 loops=1)
+                     Buffers: shared hit=1
+ Planning:
+   Buffers: shared hit=4
+ Planning Time: 0.258 ms
+ Execution Time: 3.415 ms
+(42 rows)
+
