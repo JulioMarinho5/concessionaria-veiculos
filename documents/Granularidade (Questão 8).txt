@@ -1,0 +1,5 @@
+Granularidade da Tabela Fato
+
+Cada linha da tabela fato_venda representa um item vendido em uma venda, ou seja, um registro de item_venda do sistema OLTP.
+
+Essa granularidade foi escolhida por ser o menor nível de detalhe do sistema operacional, o que permite agregar os dados para qualquer nível acima e responder todas as perguntas de negócio. Uma venda pode ter vários itens, e somente no nível do item é possível saber qual marca e modelo foram vendidos e separar o que é veículo do que é serviço. A mineração de regras de associação também depende desse nível, pois precisa dos itens de cada venda. As demais perguntas, sobre tempo, vendedor, loja, forma de pagamento e cidade do cliente, são respondidas somando os itens pelas dimensões correspondentes.
