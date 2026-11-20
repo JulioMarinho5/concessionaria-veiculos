@@ -1,0 +1,92 @@
+=== 1) Primeira execucao do ETL (DW vazio) ===
+Contagem de linhas antes e depois da carga
+             tabela             | linhas_antes | linhas_depois | carregadas 
+--------------------------------+--------------+---------------+------------
+ dw_estrela.dim_cliente         |            0 |           200 |        200
+ dw_estrela.dim_forma_pagamento |            0 |             4 |          4
+ dw_estrela.dim_loja            |            0 |             5 |          5
+ dw_estrela.dim_produto         |            0 |          1008 |       1008
+ dw_estrela.dim_tempo           |            0 |          1096 |       1096
+ dw_estrela.dim_vendedor        |            0 |            34 |         34
+ dw_estrela.fato_venda          |            0 |          5015 |       5015
+ dw_floco.dim_cidade            |            0 |            12 |         12
+ dw_floco.dim_cliente           |            0 |           200 |        200
+ dw_floco.dim_estado            |            0 |             3 |          3
+ dw_floco.dim_forma_pagamento   |            0 |             4 |          4
+ dw_floco.dim_loja              |            0 |             5 |          5
+ dw_floco.dim_marca             |            0 |             8 |          8
+ dw_floco.dim_modelo            |            0 |            33 |         33
+ dw_floco.dim_produto           |            0 |          1008 |       1008
+ dw_floco.dim_tempo             |            0 |          1096 |       1096
+ dw_floco.dim_vendedor          |            0 |            34 |         34
+ dw_floco.fato_venda            |            0 |          5015 |       5015
+(18 linhas)
+
+=== 2) Conferencia: valor liquido no OLTP x DW ===
+     oltp     |   estrela    |    floco     
+--------------+--------------+--------------
+ 116959476.84 | 116959476.84 | 116959476.84
+(1 linha)
+
+=== 3) Teste: cliente muda de cidade e uma venda nova e registrada no OLTP ===
+=== 4) Segunda execucao do ETL (carga incremental) ===
+Contagem de linhas antes e depois da carga
+             tabela             | linhas_antes | linhas_depois | carregadas 
+--------------------------------+--------------+---------------+------------
+ dw_estrela.dim_cliente         |          200 |           201 |          1
+ dw_estrela.dim_forma_pagamento |            4 |             5 |          1
+ dw_estrela.dim_loja            |            5 |             5 |          0
+ dw_estrela.dim_produto         |         1008 |          1008 |          0
+ dw_estrela.dim_tempo           |         1096 |          1096 |          0
+ dw_estrela.dim_vendedor        |           34 |            34 |          0
+ dw_estrela.fato_venda          |         5015 |          5016 |          1
+ dw_floco.dim_cidade            |           12 |            12 |          0
+ dw_floco.dim_cliente           |          200 |           201 |          1
+ dw_floco.dim_estado            |            3 |             3 |          0
+ dw_floco.dim_forma_pagamento   |            4 |             5 |          1
+ dw_floco.dim_loja              |            5 |             5 |          0
+ dw_floco.dim_marca             |            8 |             8 |          0
+ dw_floco.dim_modelo            |           33 |            33 |          0
+ dw_floco.dim_produto           |         1008 |          1008 |          0
+ dw_floco.dim_tempo             |         1096 |          1096 |          0
+ dw_floco.dim_vendedor          |           34 |            34 |          0
+ dw_floco.fato_venda            |         5015 |          5016 |          1
+(18 linhas)
+
+=== 5) SCD tipo 2 na dim_cliente (estrela) ===
+ sk_cliente | id_origem |          nome          |      cidade      | data_inicio |  data_fim  | atual 
+------------+-----------+------------------------+------------------+-------------+------------+-------
+          1 |        35 | Danilo Queiroz Freitas | Salvador         | 2026-06-30  | 2026-11-19 | f
+        201 |        35 | Danilo Queiroz Freitas | Feira de Santana | 2026-11-19  |            | t
+(2 linhas)
+
+=== 6) Venda nova no DW, ligada a versao atual do cliente ===
+ id_venda | sk_cliente |      cidade      | valor_bruto | desconto | valor_liquido 
+----------+------------+------------------+-------------+----------+---------------
+     2001 |        201 | Feira de Santana |      500.00 |     0.00 |        500.00
+(1 linha)
+
+=== 7) Terceira execucao sem dados novos (nada e duplicado) ===
+Contagem de linhas antes e depois da carga
+             tabela             | linhas_antes | linhas_depois | carregadas 
+--------------------------------+--------------+---------------+------------
+ dw_estrela.dim_cliente         |          201 |           201 |          0
+ dw_estrela.dim_forma_pagamento |            5 |             5 |          0
+ dw_estrela.dim_loja            |            5 |             5 |          0
+ dw_estrela.dim_produto         |         1008 |          1008 |          0
+ dw_estrela.dim_tempo           |         1096 |          1096 |          0
+ dw_estrela.dim_vendedor        |           34 |            34 |          0
+ dw_estrela.fato_venda          |         5016 |          5016 |          0
+ dw_floco.dim_cidade            |           12 |            12 |          0
+ dw_floco.dim_cliente           |          201 |           201 |          0
+ dw_floco.dim_estado            |            3 |             3 |          0
+ dw_floco.dim_forma_pagamento   |            5 |             5 |          0
+ dw_floco.dim_loja              |            5 |             5 |          0
+ dw_floco.dim_marca             |            8 |             8 |          0
+ dw_floco.dim_modelo            |           33 |            33 |          0
+ dw_floco.dim_produto           |         1008 |          1008 |          0
+ dw_floco.dim_tempo             |         1096 |          1096 |          0
+ dw_floco.dim_vendedor          |           34 |            34 |          0
+ dw_floco.fato_venda            |         5016 |          5016 |          0
+(18 linhas)
+
