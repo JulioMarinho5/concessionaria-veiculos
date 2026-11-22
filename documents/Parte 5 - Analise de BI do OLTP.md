@@ -54,50 +54,24 @@ Numeros tirados de `resultado_analise_bi_oltp.txt` (2.000 vendas, jan/2024 a out
    - As regras com "Emplacamento" sao obvias (so existe emplacamento em venda de veiculo).
      Na Etapa 2 elas devem ser filtradas ou comentadas como regra trivial.
 
-## Pontos de atencao para a equipe
+## Pontos de atencao levantados na Entrega 1 (situacao atual)
 
-- **Dados limpos demais para o ETL.** Hoje ha 0 nulos e 0 textos fora do padrao (parte 1.2
-  do script). O enunciado pede tratamento de nulos e padronizacao de textos no ETL, entao
-  precisamos de alguns casos para tratar. Opcoes: cadastrar pela aplicacao alguns clientes com
-  cidade em minusculas, espacos ou telefone vazio, ou usar o caso que ja existe: na dimensao
-  produto, marca, modelo e categoria ficam nulos quando o item e um servico.
-- **SCD tipo 2.** So aparece se algum cliente mudar de cidade depois da primeira carga do DW.
-  A opcao "Clientes > Alterar" da `Aplicacao` ja faz isso (`Cliente.alterarCidade`).
-- **2026 incompleto.** Toda comparacao entre anos no OLAP deve usar o mesmo periodo (jan-out).
-- **Granularidade sugerida para a fato:** um item de venda (uma linha de `item_venda`), como ja
-  indicado em `ItemVenda`. A dimensao produto precisa cobrir veiculo e servico (atributo
-  `tipo_item`). Medidas: quantidade, valor bruto, desconto, valor liquido.
+- **Dados limpos demais para o ETL.** A carga nao tem nulos nem textos fora do padrao
+  (parte 1.2 do script). O ETL da Parte 4 trata esses casos de qualquer forma
+  (`etl.limpar`, `etl.nome_proprio` e `COALESCE` com "Nao Informada" em `01_staging.sql`),
+  e a dimensao produto usa o membro "Servico" onde marca, modelo e categoria nao se aplicam.
+  Conferido: um cliente gravado com cidade `'  feira de santana '` e UF `'ba'` e um item com
+  desconto nulo chegaram ao DW como "Feira de Santana", "BA" e desconto 0,00.
+- **SCD tipo 2.** Demonstrado pelo ETL (mudanca de cidade de um cliente, em `resultado_etl.txt`).
+- **2026 incompleto.** As consultas OLAP que comparam anos usam janeiro a outubro ou avisam
+  que 2026 tem so 10 meses.
+- **Granularidade.** Adotada pela equipe: um item de venda por linha da fato
+  (`documents/Granularidade (Questão 8).txt`).
 
-## Plano para a Etapa 2
+## Etapa 2
 
-### OLAP: 2 consultas por operacao
-
-| Operacao | Consulta 1 | Consulta 2 |
-|---|---|---|
-| Roll-up | Faturamento mes -> trimestre -> ano (`GROUP BY ROLLUP`) - pergunta 1 | Unidades modelo -> marca -> total (`ROLLUP`) - pergunta 2 |
-| Drill-down | Faturamento de 2025 por trimestre, depois por mes | Faturamento por loja, depois por vendedor - pergunta 3 |
-| Slice | So `FINANCIAMENTO`: faturamento por categoria de veiculo | So o ano de 2025: faturamento e desconto por loja - pergunta 4 |
-| Dice | SUV e Picape, lojas de Salvador, 2025 e 2026 | Servicos, 4o trimestre, lojas de Feira e Vitoria da Conquista |
-| Pivot | Lojas nas linhas x anos nas colunas (`SUM ... FILTER`) | Categoria x forma de pagamento (`GROUP BY CUBE`) - pergunta 5 |
-
-### Comparacao de tempo
-
-A consulta da parte 4 do script (faturamento por ano, trimestre, categoria e cidade da loja)
-usa 4 juncoes no OLTP e levou cerca de 3 ms. Ela sera reescrita no estrela e no floco de neve e
-executada varias vezes em cada modelo (usar a mediana, porque com 5 mil itens os tempos sao
-pequenos e variam). O numero de juncoes de cada versao entra na questao 9 do relatorio.
-
-### Mineracao
-
-A pergunta 8 tem duas partes, entao a proposta e:
-
-- **Principal: regras de associacao (Apriori)** sobre os itens de cada venda, com suporte
-  minimo de 2% e confianca minima de 40% (os mesmos cortes da previa). A previa ja mostra regras
-  fortes e faceis de explicar (questao 13 do relatorio: suporte, confianca e lift).
-- **Complemento: k-means** dos clientes por recencia, frequencia e valor (normalizados), com o
-  numero de grupos escolhido pelo metodo do cotovelo.
-
-Base exportada do DW, notebook Python (pandas, scikit-learn, mlxtend) ou Weka.
+As consultas OLAP, a comparacao de tempo e a mineracao, feitas sobre o DW, estao em
+[Parte 5 - OLAP e Mineracao](Parte%205%20-%20OLAP%20e%20Mineracao.md).
 
 ## Uso de IA
 

@@ -1,0 +1,218 @@
+-- Saida de: psql -U postgres -d concessionaria -f database/olap/consultas_olap.sql
+-- PostgreSQL 16, DW carregado por database/etl/05_executar_etl.sql (1a carga, 5.015 linhas na fato)
+
+       nivel        | ano  | trimestre | mes | vendas | faturamento  
+--------------------+------+-----------+-----+--------+--------------
+ Mes                | 2024 |         1 |   1 |     38 |   1466838.00
+ Mes                | 2024 |         1 |   2 |     39 |   2370033.00
+ Mes                | 2024 |         1 |   3 |     52 |   3171176.50
+ Total do trimestre | 2024 |         1 |     |    129 |   7008047.50
+ Mes                | 2024 |         2 |   4 |     55 |   3156603.00
+ Mes                | 2024 |         2 |   5 |     67 |   3201097.50
+ Mes                | 2024 |         2 |   6 |     48 |   2709639.00
+ Total do trimestre | 2024 |         2 |     |    170 |   9067339.50
+ Mes                | 2024 |         3 |   7 |     45 |   3050329.50
+ Mes                | 2024 |         3 |   8 |     56 |   3603242.00
+ Mes                | 2024 |         3 |   9 |     49 |   2927447.50
+ Total do trimestre | 2024 |         3 |     |    150 |   9581019.00
+ Mes                | 2024 |         4 |  10 |     60 |   4308616.00
+ Mes                | 2024 |         4 |  11 |     66 |   4013166.50
+ Mes                | 2024 |         4 |  12 |     78 |   4623648.50
+ Total do trimestre | 2024 |         4 |     |    204 |  12945431.00
+ Total do ano       | 2024 |           |     |    653 |  38601837.00
+ Mes                | 2025 |         1 |   1 |     60 |   4837615.54
+ Mes                | 2025 |         1 |   2 |     40 |   2749179.21
+ Mes                | 2025 |         1 |   3 |     52 |   3568252.94
+ Total do trimestre | 2025 |         1 |     |    152 |  11155047.69
+ Mes                | 2025 |         2 |   4 |     55 |   3527470.43
+ Mes                | 2025 |         2 |   5 |     48 |   2624839.00
+ Mes                | 2025 |         2 |   6 |     63 |   3353147.48
+ Total do trimestre | 2025 |         2 |     |    166 |   9505456.91
+ Mes                | 2025 |         3 |   7 |     63 |   2922693.38
+ Mes                | 2025 |         3 |   8 |     67 |   4385166.74
+ Mes                | 2025 |         3 |   9 |     45 |   2410223.50
+ Total do trimestre | 2025 |         3 |     |    175 |   9718083.62
+ Mes                | 2025 |         4 |  10 |     67 |   3367849.89
+ Mes                | 2025 |         4 |  11 |     58 |   2655070.41
+ Mes                | 2025 |         4 |  12 |     85 |   4762931.31
+ Total do trimestre | 2025 |         4 |     |    210 |  10785851.61
+ Total do ano       | 2025 |           |     |    703 |  41164439.83
+ Mes                | 2026 |         1 |   1 |     66 |   4687974.03
+ Mes                | 2026 |         1 |   2 |     41 |   2547258.12
+ Mes                | 2026 |         1 |   3 |     63 |   3019577.27
+ Total do trimestre | 2026 |         1 |     |    170 |  10254809.42
+ Mes                | 2026 |         2 |   4 |     62 |   3941023.09
+ Mes                | 2026 |         2 |   5 |     72 |   3544644.63
+ Mes                | 2026 |         2 |   6 |     74 |   5134601.00
+ Total do trimestre | 2026 |         2 |     |    208 |  12620268.72
+ Mes                | 2026 |         3 |   7 |     72 |   3500879.46
+ Mes                | 2026 |         3 |   8 |     66 |   2751664.10
+ Mes                | 2026 |         3 |   9 |     59 |   3865312.69
+ Total do trimestre | 2026 |         3 |     |    197 |  10117856.25
+ Mes                | 2026 |         4 |  10 |     69 |   4200265.62
+ Total do trimestre | 2026 |         4 |     |     69 |   4200265.62
+ Total do ano       | 2026 |           |     |    644 |  37193200.01
+ Total geral        |      |           |     |   2000 | 116959476.84
+(50 rows)
+
+       nivel        | categoria |   marca    | unidades | faturamento  
+--------------------+-----------+------------+----------+--------------
+ Marca              | Hatch     | Fiat       |       81 |   6579800.00
+ Marca              | Hatch     | Volkswagen |       53 |   5106650.00
+ Marca              | Hatch     | Hyundai    |       49 |   4269750.00
+ Marca              | Hatch     | Chevrolet  |       37 |   3372150.00
+ Marca              | Hatch     | Toyota     |       32 |   3584800.00
+ Total da categoria | Hatch     |            |      252 |  22913150.00
+ Marca              | Minivan   | Chevrolet  |       29 |   3565250.00
+ Total da categoria | Minivan   |            |       29 |   3565250.00
+ Marca              | Picape    | Fiat       |       60 |   7543300.00
+ Marca              | Picape    | Chevrolet  |       47 |   7489750.00
+ Marca              | Picape    | Volkswagen |       45 |   7028600.00
+ Marca              | Picape    | Toyota     |        9 |   2678200.00
+ Total da categoria | Picape    |            |      161 |  24739850.00
+ Marca              | SUV       | Fiat       |       68 |   8597150.00
+ Marca              | SUV       | Jeep       |       56 |  10135450.00
+ Marca              | SUV       | Volkswagen |       49 |   7025750.00
+ Marca              | SUV       | Hyundai    |       28 |   4005000.00
+ Marca              | SUV       | Chevrolet  |       27 |   3741450.00
+ Marca              | SUV       | Toyota     |       21 |   3654200.00
+ Marca              | SUV       | Honda      |       13 |   2105750.00
+ Total da categoria | SUV       |            |      262 |  39264750.00
+ Marca              | Seda      | Hyundai    |       49 |   4855650.00
+ Marca              | Seda      | Chevrolet  |       47 |   4821400.00
+ Marca              | Seda      | Fiat       |       30 |   2994100.00
+ Marca              | Seda      | Honda      |       25 |   4580600.00
+ Marca              | Seda      | Volkswagen |       25 |   2989250.00
+ Marca              | Seda      | Toyota     |       13 |   2099450.00
+ Total da categoria | Seda      |            |      189 |  22340450.00
+ Total geral        |           |            |      893 | 112823450.00
+(29 rows)
+
+   marca    |    modelo     | unidades | faturamento | ticket_medio | pct_da_categoria 
+------------+---------------+----------+-------------+--------------+------------------
+ Fiat       | Fastback      |       32 |  4402050.00 |    137564.06 |             11.2
+ Fiat       | Pulse         |       36 |  4195100.00 |    116530.56 |             10.7
+ Hyundai    | Creta         |       28 |  4005000.00 |    143035.71 |             10.2
+ Volkswagen | T-Cross       |       25 |  3817700.00 |    152708.00 |              9.7
+ Jeep       | Commander     |       16 |  3745900.00 |    234118.75 |              9.5
+ Chevrolet  | Tracker       |       27 |  3741450.00 |    138572.22 |              9.5
+ Toyota     | Corolla Cross |       21 |  3654200.00 |    174009.52 |              9.3
+ Jeep       | Compass       |       18 |  3495950.00 |    194219.44 |              8.9
+ Volkswagen | Nivus         |       24 |  3208050.00 |    133668.75 |              8.2
+ Jeep       | Renegade      |       22 |  2893600.00 |    131527.27 |              7.4
+ Honda      | HR-V          |       13 |  2105750.00 |    161980.77 |              5.4
+(11 rows)
+
+                loja                |          vendedor          |         cargo         | vendas | faturamento | pct_da_loja | posicao 
+------------------------------------+----------------------------+-----------------------+--------+-------------+-------------+---------
+ Rota Veiculos Feira de Santana     | Sergio Nascimento Teixeira | Vendedor              |     59 |  8140449.19 |        34.2 |       1
+ Rota Veiculos Feira de Santana     | Vanessa Rocha Nascimento   | Vendedor              |     52 |  6388478.35 |        26.8 |       2
+ Rota Veiculos Feira de Santana     | Danilo Araujo Cardoso      | Vendedor              |     49 |  6227844.85 |        26.2 |       3
+ Rota Veiculos Feira de Santana     | Daniela Brito Moreira      | Vendedor              |     19 |  2726693.71 |        11.5 |       4
+ Rota Veiculos Feira de Santana     | Caio Silva Matos           | Consultor de Servicos |    118 |   160658.70 |         0.7 |       5
+ Rota Veiculos Feira de Santana     | Luana Bispo Mendes         | Consultor de Servicos |    124 |   159600.62 |         0.7 |       6
+ Rota Veiculos Iguatemi             | Eduardo Conceicao Moreira  | Vendedor              |     79 | 10343695.97 |        39.4 |       1
+ Rota Veiculos Iguatemi             | Bruno Silva Rocha          | Vendedor              |     46 |  5783707.40 |        22.0 |       2
+ Rota Veiculos Iguatemi             | Larissa Ferreira Almeida   | Vendedor              |     41 |  5020245.63 |        19.1 |       3
+ Rota Veiculos Iguatemi             | Eduarda Oliveira Andrade   | Vendedor              |     36 |  4805597.13 |        18.3 |       4
+ Rota Veiculos Iguatemi             | Pedro Carvalho Mendes      | Consultor de Servicos |    134 |   170073.98 |         0.6 |       5
+ Rota Veiculos Iguatemi             | Ana Gomes Pinto            | Consultor de Servicos |    118 |   151129.70 |         0.6 |       6
+ Rota Veiculos Lauro de Freitas     | Natalia Ferreira Almeida   | Vendedor              |     69 |  8511162.50 |        41.2 |       1
+ Rota Veiculos Lauro de Freitas     | Juliana Queiroz Ferreira   | Vendedor              |     50 |  6493193.64 |        31.4 |       2
+ Rota Veiculos Lauro de Freitas     | Sergio Nascimento Gomes    | Vendedor              |     36 |  5386083.93 |        26.1 |       3
+ Rota Veiculos Lauro de Freitas     | Mariana Gomes Reis         | Consultor de Servicos |    107 |   141538.82 |         0.7 |       4
+ Rota Veiculos Lauro de Freitas     | Eduarda Conceicao Carvalho | Consultor de Servicos |    107 |   131254.97 |         0.6 |       5
+ Rota Veiculos Paralela             | Helena Dias Araujo         | Vendedor              |     71 |  9361304.82 |        38.2 |       1
+ Rota Veiculos Paralela             | Fernanda Carvalho Bispo    | Vendedor              |     38 |  4763672.38 |        19.4 |       2
+ Rota Veiculos Paralela             | Matheus Ferreira Nunes     | Vendedor              |     40 |  4736914.80 |        19.3 |       3
+ Rota Veiculos Paralela             | Bruno Nascimento Costa     | Vendedor              |     24 |  2834661.64 |        11.6 |       4
+ Rota Veiculos Paralela             | Tiago Sampaio Ribeiro      | Vendedor              |     17 |  2505915.58 |        10.2 |       5
+ Rota Veiculos Paralela             | Mariana Lima Carvalho      | Consultor de Servicos |    128 |   167938.01 |         0.7 |       6
+ Rota Veiculos Paralela             | Marcos Bispo Freitas       | Consultor de Servicos |    105 |   133601.46 |         0.5 |       7
+ Rota Veiculos Vitoria da Conquista | Daniela Ferreira Ribeiro   | Vendedor              |     75 |  9554013.26 |        44.0 |       1
+ Rota Veiculos Vitoria da Conquista | Eduardo Costa Matos        | Vendedor              |     56 |  7604265.09 |        35.0 |       2
+ Rota Veiculos Vitoria da Conquista | Daniela Freitas Santos     | Vendedor              |     36 |  4350239.77 |        20.0 |       3
+ Rota Veiculos Vitoria da Conquista | Rafael Carvalho Conceicao  | Consultor de Servicos |     85 |   107579.04 |         0.5 |       4
+ Rota Veiculos Vitoria da Conquista | Gustavo Cardoso Matos      | Consultor de Servicos |     81 |    97961.90 |         0.5 |       5
+(29 rows)
+
+ categoria | unidades | faturamento | ticket_medio 
+-----------+----------+-------------+--------------
+ Hatch     |      126 | 11432250.00 |     90732.14
+ SUV       |      125 | 18874250.00 |    150994.00
+ Seda      |       83 |  9761150.00 |    117604.22
+ Picape    |       81 | 11585250.00 |    143027.78
+ Minivan   |        9 |  1100050.00 |    122227.78
+(5 rows)
+
+                loja                |   bruto    | desconto  |  liquido   | pct_desconto 
+------------------------------------+------------+-----------+------------+--------------
+ Rota Veiculos Iguatemi             | 9391407.00 | 213869.89 | 9177537.11 |         2.28
+ Rota Veiculos Vitoria da Conquista | 8819603.00 | 193554.36 | 8626048.64 |         2.19
+ Rota Veiculos Paralela             | 8636730.50 | 271718.09 | 8365012.41 |         3.15
+ Rota Veiculos Lauro de Freitas     | 7773752.50 | 180860.93 | 7592891.57 |         2.33
+ Rota Veiculos Feira de Santana     | 7590367.00 | 187416.90 | 7402950.10 |         2.47
+(5 rows)
+
+ ano  |          loja          | categoria | unidades | faturamento 
+------+------------------------+-----------+----------+-------------
+ 2025 | Rota Veiculos Iguatemi | Picape    |       13 |  1769450.00
+ 2026 | Rota Veiculos Iguatemi | Picape    |       11 |  1707650.00
+ 2025 | Rota Veiculos Iguatemi | SUV       |       14 |  2053600.00
+ 2026 | Rota Veiculos Iguatemi | SUV       |       18 |  3040850.00
+ 2025 | Rota Veiculos Paralela | Picape    |       11 |  1955300.00
+ 2026 | Rota Veiculos Paralela | Picape    |       12 |  1810100.00
+ 2025 | Rota Veiculos Paralela | SUV       |       10 |  1471250.00
+ 2026 | Rota Veiculos Paralela | SUV       |       19 |  2823850.00
+(8 rows)
+
+     loja_cidade      |           servico           | quantidade | faturamento 
+----------------------+-----------------------------+------------+-------------
+ Feira de Santana     | Emplacamento e documentacao |         82 |    87221.75
+ Feira de Santana     | Garantia estendida 2 anos   |         23 |    81540.81
+ Feira de Santana     | Troca de pneus (jogo)       |         18 |    44645.70
+ Feira de Santana     | Pelicula (insulfilm)        |         48 |    44076.60
+ Feira de Santana     | Instalacao de multimidia    |         19 |    34915.50
+ Feira de Santana     | Polimento e cristalizacao   |         28 |    21678.60
+ Feira de Santana     | Troca de oleo e filtro      |         55 |    21174.83
+ Feira de Santana     | Instalacao de alarme        |         17 |    20942.55
+ Feira de Santana     | Revisao 20.000 km           |         20 |    18425.14
+ Feira de Santana     | Kit tapetes e acessorios    |         27 |    12258.98
+ Feira de Santana     | Revisao 10.000 km           |         16 |    10660.01
+ Feira de Santana     | Alinhamento e balanceamento |         32 |     7172.00
+ Feira de Santana     | Higienizacao interna        |         16 |     5622.50
+ Vitoria da Conquista | Emplacamento e documentacao |         72 |    74456.25
+ Vitoria da Conquista | Pelicula (insulfilm)        |         57 |    52089.19
+ Vitoria da Conquista | Garantia estendida 2 anos   |         13 |    44607.50
+ Vitoria da Conquista | Instalacao de multimidia    |         16 |    29601.00
+ Vitoria da Conquista | Instalacao de alarme        |         20 |    24233.85
+ Vitoria da Conquista | Revisao 30.000 km           |         18 |    22927.68
+ Vitoria da Conquista | Polimento e cristalizacao   |         30 |    22839.39
+ Vitoria da Conquista | Troca de oleo e filtro      |         49 |    18997.01
+ Vitoria da Conquista | Revisao 20.000 km           |         12 |    10855.78
+ Vitoria da Conquista | Kit tapetes e acessorios    |         22 |     9911.09
+ Vitoria da Conquista | Revisao 10.000 km           |         12 |     8058.23
+ Vitoria da Conquista | Troca de pastilhas de freio |         10 |     6025.50
+ Vitoria da Conquista | Alinhamento e balanceamento |         26 |     5789.12
+(26 rows)
+
+                loja                |  2024   |  2025   | 2026 (jan-out) |  total   
+------------------------------------+---------+---------+----------------+----------
+ Rota Veiculos Iguatemi             |  8254.2 |  9177.5 |         8842.7 |  26274.4
+ Rota Veiculos Paralela             |  8534.4 |  8365.0 |         7604.6 |  24504.0
+ Rota Veiculos Feira de Santana     |  7648.4 |  7403.0 |         8752.4 |  23803.7
+ Rota Veiculos Vitoria da Conquista |  6781.4 |  8626.0 |         6306.6 |  21714.1
+ Rota Veiculos Lauro de Freitas     |  7383.4 |  7592.9 |         5686.9 |  20663.2
+ Total                              | 38601.8 | 41164.4 |        37193.2 | 116959.5
+(6 rows)
+
+ categoria | financiamento | a_vista | consorcio | cartao | total 
+-----------+---------------+---------+-----------+--------+-------
+ SUV       |           125 |      46 |        49 |     42 |   262
+ Hatch     |           126 |      45 |        48 |     33 |   252
+ Seda      |            83 |      42 |        40 |     24 |   189
+ Picape    |            81 |      24 |        29 |     27 |   161
+ Minivan   |             9 |       5 |         9 |      6 |    29
+ Total     |           424 |     162 |       175 |    132 |   893
+(6 rows)
+

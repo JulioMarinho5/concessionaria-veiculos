@@ -1,0 +1,52 @@
+==============================================================================
+1) REGRAS DE ASSOCIACAO (APRIORI)
+==============================================================================
+Base: 2000 vendas (cestas), 20 itens distintos, 5015 linhas venda-item
+Parametros: suporte minimo = 2%, confianca minima = 40%, conjuntos de ate 3 itens
+
+Conjuntos frequentes por tamanho: 1 item(ns): 19, 2 item(ns): 46, 3 item(ns): 33
+Regras encontradas: 83 (27 triviais com Emplacamento + Veiculo, 56 uteis)
+
+15 regras uteis com maior lift:
+                                             se_comprou                entao_compra  vendas suporte confianca lift
+                                  Troca de pneus (jogo) Alinhamento e balanceamento     140   7.00%     85.9% 5.58
+                            Alinhamento e balanceamento       Troca de pneus (jogo)     140   7.00%     45.5% 5.58
+                                   Higienizacao interna   Polimento e cristalizacao      82   4.10%     59.9% 3.59
+             Polimento e cristalizacao + Veiculo Picape        Pelicula (insulfilm)      48   2.40%     92.3% 3.53
+                Polimento e cristalizacao + Veiculo SUV        Pelicula (insulfilm)      74   3.70%     91.4% 3.49
+                               Instalacao de multimidia               Veiculo Hatch      68   3.40%     43.6% 3.46
+       Instalacao de alarme + Polimento e cristalizacao        Pelicula (insulfilm)      51   2.55%     87.9% 3.36
+Emplacamento e documentacao + Polimento e cristalizacao        Pelicula (insulfilm)     186   9.30%     86.1% 3.29
+  Garantia estendida 2 anos + Polimento e cristalizacao        Pelicula (insulfilm)      40   2.00%     80.0% 3.06
+   Kit tapetes e acessorios + Polimento e cristalizacao        Pelicula (insulfilm)      58   2.90%     79.5% 3.04
+              Polimento e cristalizacao + Veiculo Hatch        Pelicula (insulfilm)      51   2.55%     78.5% 3.00
+                                      Revisao 20.000 km      Troca de oleo e filtro     119   5.95%     72.1% 2.95
+                   Pelicula (insulfilm) + Veiculo Hatch   Polimento e cristalizacao      51   2.55%     48.6% 2.92
+                                      Revisao 30.000 km      Troca de oleo e filtro     116   5.80%     68.6% 2.81
+                                         Veiculo Picape        Pelicula (insulfilm)     113   5.65%     70.2% 2.68
+
+==============================================================================
+2) AGRUPAMENTO DE CLIENTES (K-MEANS)
+==============================================================================
+Base: 184 clientes com pelo menos uma compra
+Variaveis: recencia (dias), frequencia (vendas) e valor (R$ liquido)
+Preparacao: log(1+x) em frequencia e valor, depois padronizacao (media 0, desvio 1)
+
+k | inercia | silhueta
+2 |   293.9 | 0.422
+3 |   194.4 | 0.444
+4 |   129.3 | 0.486
+5 |   100.7 | 0.448
+6 |    80.4 | 0.459
+7 |    63.3 | 0.464
+8 |    52.5 | 0.458
+k escolhido: 4 (maior silhueta)
+
+Perfil de cada grupo (G1 = maior valor medio):
+       clientes pct_clientes recencia_media_dias frequencia_media  valor_medio pct_faturamento compram_veiculo
+grupo                                                                                                         
+G1           68        37.0%                  39             23.0 R$ 1.325.758          77.08%            100%
+G2           85        46.2%                 155              4.4   R$ 297.895          21.65%            100%
+G3           15         8.2%                 606              2.0    R$ 96.302           1.24%             67%
+G4           16         8.7%                 156              2.1     R$ 2.647           0.04%              0%
+

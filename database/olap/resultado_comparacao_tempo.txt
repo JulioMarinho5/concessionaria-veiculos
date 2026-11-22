@@ -1,0 +1,115 @@
+-- Saida de: psql -U postgres -d concessionaria -f database/olap/comparacao_tempo.sql
+-- PostgreSQL 16, 5.015 linhas na fato. Os tempos variam de maquina para maquina;
+-- o que importa e a comparacao entre os tres modelos na mesma maquina.
+
+ANALYZE
+ linhas_oltp | linhas_estrela | linhas_floco | diferencas_oltp_estrela | diferencas_oltp_floco 
+-------------+----------------+--------------+-------------------------+-----------------------
+         210 |            210 |          210 |                       0 |                     0
+(1 row)
+
+CREATE FUNCTION
+          modelo           | mediana_ms | minimo_ms | maximo_ms 
+---------------------------+------------+-----------+-----------
+ OLTP (4 juncoes)          |      2.263 |     2.085 |     4.957
+ Estrela (3 juncoes)       |      1.363 |     1.246 |     2.136
+ Floco de neve (5 juncoes) |      1.595 |     1.468 |     2.273
+(3 rows)
+
+--- Plano: OLTP ---
+                                               QUERY PLAN                                               
+--------------------------------------------------------------------------------------------------------
+ HashAggregate (actual time=2.956..3.012 rows=210 loops=1)
+   Group Key: EXTRACT(year FROM v.data_hora), EXTRACT(quarter FROM v.data_hora), mo.categoria, l.cidade
+   Batches: 1  Memory Usage: 337kB
+   ->  Hash Join (actual time=0.594..2.500 rows=893 loops=1)
+         Hash Cond: (v.loja_id = l.id)
+         ->  Hash Join (actual time=0.582..2.233 rows=893 loops=1)
+               Hash Cond: (ve.modelo_id = mo.id)
+               ->  Hash Join (actual time=0.573..2.103 rows=893 loops=1)
+                     Hash Cond: (i.veiculo_id = ve.id)
+                     ->  Hash Join (actual time=0.370..1.614 rows=5015 loops=1)
+                           Hash Cond: (i.venda_id = v.id)
+                           ->  Seq Scan on item_venda i (actual time=0.003..0.353 rows=5015 loops=1)
+                           ->  Hash (actual time=0.362..0.363 rows=2000 loops=1)
+                                 Buckets: 2048  Batches: 1  Memory Usage: 126kB
+                                 ->  Seq Scan on venda v (actual time=0.003..0.187 rows=2000 loops=1)
+                     ->  Hash (actual time=0.200..0.200 rows=993 loops=1)
+                           Buckets: 1024  Batches: 1  Memory Usage: 55kB
+                           ->  Seq Scan on veiculo ve (actual time=0.003..0.118 rows=993 loops=1)
+               ->  Hash (actual time=0.007..0.007 rows=32 loops=1)
+                     Buckets: 1024  Batches: 1  Memory Usage: 10kB
+                     ->  Seq Scan on modelo mo (actual time=0.001..0.004 rows=32 loops=1)
+         ->  Hash (actual time=0.006..0.006 rows=5 loops=1)
+               Buckets: 1024  Batches: 1  Memory Usage: 9kB
+               ->  Seq Scan on loja l (actual time=0.003..0.003 rows=5 loops=1)
+ Planning Time: 0.264 ms
+ Execution Time: 3.076 ms
+(26 rows)
+
+--- Plano: Estrela ---
+                                             QUERY PLAN                                              
+-----------------------------------------------------------------------------------------------------
+ HashAggregate (actual time=1.767..1.809 rows=210 loops=1)
+   Group Key: t.ano, t.trimestre, p.categoria, l.cidade
+   Batches: 1  Memory Usage: 157kB
+   ->  Hash Join (actual time=0.443..1.491 rows=893 loops=1)
+         Hash Cond: (f.sk_loja = l.sk_loja)
+         ->  Hash Join (actual time=0.435..1.366 rows=893 loops=1)
+               Hash Cond: (f.sk_tempo = t.sk_tempo)
+               ->  Hash Join (actual time=0.231..1.047 rows=893 loops=1)
+                     Hash Cond: (f.sk_produto = p.sk_produto)
+                     ->  Seq Scan on fato_venda f (actual time=0.003..0.371 rows=5015 loops=1)
+                     ->  Hash (actual time=0.225..0.226 rows=993 loops=1)
+                           Buckets: 1024  Batches: 1  Memory Usage: 50kB
+                           ->  Seq Scan on dim_produto p (actual time=0.003..0.144 rows=993 loops=1)
+                                 Filter: ((tipo_item)::text = 'VEICULO'::text)
+                                 Rows Removed by Filter: 15
+               ->  Hash (actual time=0.202..0.203 rows=1096 loops=1)
+                     Buckets: 2048  Batches: 1  Memory Usage: 59kB
+                     ->  Seq Scan on dim_tempo t (actual time=0.002..0.108 rows=1096 loops=1)
+         ->  Hash (actual time=0.006..0.006 rows=5 loops=1)
+               Buckets: 1024  Batches: 1  Memory Usage: 9kB
+               ->  Seq Scan on dim_loja l (actual time=0.002..0.003 rows=5 loops=1)
+ Planning Time: 0.202 ms
+ Execution Time: 1.841 ms
+(23 rows)
+
+--- Plano: Floco de neve ---
+                                                   QUERY PLAN                                                    
+-----------------------------------------------------------------------------------------------------------------
+ HashAggregate (actual time=1.933..1.978 rows=210 loops=1)
+   Group Key: t.ano, t.trimestre, mo.categoria, c.nome
+   Batches: 1  Memory Usage: 169kB
+   ->  Hash Join (actual time=0.397..1.661 rows=893 loops=1)
+         Hash Cond: (l.sk_cidade = c.sk_cidade)
+         ->  Hash Join (actual time=0.388..1.546 rows=893 loops=1)
+               Hash Cond: (f.sk_loja = l.sk_loja)
+               ->  Hash Join (actual time=0.385..1.435 rows=893 loops=1)
+                     Hash Cond: (p.sk_modelo = mo.sk_modelo)
+                     ->  Hash Join (actual time=0.377..1.316 rows=893 loops=1)
+                           Hash Cond: (f.sk_tempo = t.sk_tempo)
+                           ->  Hash Join (actual time=0.192..0.976 rows=893 loops=1)
+                                 Hash Cond: (f.sk_produto = p.sk_produto)
+                                 ->  Seq Scan on fato_venda f (actual time=0.002..0.330 rows=5015 loops=1)
+                                 ->  Hash (actual time=0.188..0.188 rows=993 loops=1)
+                                       Buckets: 1024  Batches: 1  Memory Usage: 47kB
+                                       ->  Seq Scan on dim_produto p (actual time=0.002..0.107 rows=993 loops=1)
+                                             Filter: ((tipo_item)::text = 'VEICULO'::text)
+                                             Rows Removed by Filter: 15
+                           ->  Hash (actual time=0.182..0.182 rows=1096 loops=1)
+                                 Buckets: 2048  Batches: 1  Memory Usage: 59kB
+                                 ->  Seq Scan on dim_tempo t (actual time=0.002..0.088 rows=1096 loops=1)
+                     ->  Hash (actual time=0.007..0.007 rows=33 loops=1)
+                           Buckets: 1024  Batches: 1  Memory Usage: 10kB
+                           ->  Seq Scan on dim_modelo mo (actual time=0.001..0.003 rows=33 loops=1)
+               ->  Hash (actual time=0.002..0.002 rows=5 loops=1)
+                     Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                     ->  Seq Scan on dim_loja l (actual time=0.001..0.001 rows=5 loops=1)
+         ->  Hash (actual time=0.007..0.007 rows=12 loops=1)
+               Buckets: 1024  Batches: 1  Memory Usage: 9kB
+               ->  Seq Scan on dim_cidade c (actual time=0.003..0.004 rows=12 loops=1)
+ Planning Time: 0.307 ms
+ Execution Time: 2.018 ms
+(33 rows)
+
